@@ -25,7 +25,21 @@ public class ProductServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter wr = resp.getWriter();
         if (req.getParameter("id") != null) {
-            // TODO
+            try {
+                final int id = Integer.parseInt(req.getParameter("id"));
+
+                Product product = productRepository.findById(id);
+                if (product != null) {
+                    wr.println("<h3>Product info:</h3>");
+                    wr.println("id: " + product.getId());
+                    wr.println("<br/>");
+                    wr.println("name: " + product.getName());
+                } else {
+                    wr.println("<h3>Product with id = " + id + " does not exist.</h3>");
+                }
+            } catch (NumberFormatException e) {
+                wr.println("<h3>Invalid id</h3>");
+            }
         } else if (req.getPathInfo() == null || req.getPathInfo().equals("/")) {
             wr.println("<table>");
 
@@ -37,8 +51,8 @@ public class ProductServlet extends HttpServlet {
             for (Product product : productRepository.findAll()) {
                 wr.println("<tr>");
                 wr.println("<td>" + product.getId() + "</td>");
-                wr.println("<td>" + product.getName() + "</td>");
-                // TODO <a href='product?id=12'></a>
+                wr.println(String.format("<td><a href='product?id=%d'>%s</a></td>",
+                        product.getId(), product.getName()));
                 wr.println("</tr>");
             }
 
