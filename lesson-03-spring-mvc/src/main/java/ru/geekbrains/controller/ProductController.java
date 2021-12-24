@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.persist.Product;
 import ru.geekbrains.persist.ProductRepository;
@@ -34,12 +35,15 @@ public class ProductController {
 
     @GetMapping("/new")
     public String create(Model model) {
-        // TODO model.addAttribute("product", ?????);
+        model.addAttribute("product", new Product());
         return "product_form";
     }
 
     @PostMapping
-    public String save(Product product) {
+    public String save(Product product, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "product_form";
+        }
         productRepository.save(product);
         return "redirect:/product";
     }
