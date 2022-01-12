@@ -19,6 +19,7 @@ public class ProductRepositoryHibernateImpl implements ProductRepository {
         em.getTransaction().begin();
         List<Product> products = em.createQuery("SELECT p FROM Product p", Product.class).getResultList();
         em.getTransaction().commit();
+        em.close();
         return products;
     }
 
@@ -28,6 +29,7 @@ public class ProductRepositoryHibernateImpl implements ProductRepository {
         em.getTransaction().begin();
         Product product = em.find(Product.class, id);
         em.getTransaction().commit();
+        em.close();
         return Optional.ofNullable(product);
     }
 
@@ -37,15 +39,17 @@ public class ProductRepositoryHibernateImpl implements ProductRepository {
         em.getTransaction().begin();
         em.persist(product);
         em.getTransaction().commit();
+        em.close();
     }
 
     @Override
     public void delete(long id) {
         EntityManager em = emFactory.createEntityManager();
         em.getTransaction().begin();
-        em.createQuery("DELETE FROM Product p WHERE p.id = :id", Product.class)
+        em.createQuery("DELETE FROM Product p WHERE p.id = :id")
                 .setParameter("id", id)
                 .executeUpdate();
         em.getTransaction().commit();
+        em.close();
     }
 }
