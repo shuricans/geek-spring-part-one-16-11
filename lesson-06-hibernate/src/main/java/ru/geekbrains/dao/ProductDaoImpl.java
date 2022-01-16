@@ -2,51 +2,48 @@ package ru.geekbrains.dao;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.geekbrains.persist.User;
+import ru.geekbrains.persist.Product;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 @AllArgsConstructor
 @Component
-public class UserDaoImpl implements Dao<User> {
+public class ProductDaoImpl implements Dao<Product> {
 
     private final EntityManagerFactory emFactory;
 
     @Override
-    public Optional<User> findById(long id) {
+    public Optional<Product> findById(long id) {
         return executeForEntityManager(
                 emFactory,
-                em -> Optional.ofNullable(em.find(User.class, id))
+                em -> Optional.ofNullable(em.find(Product.class, id))
         );
     }
 
     @Override
-    public List<User> findAll() {
+    public List<Product> findAll() {
         return executeForEntityManager(
                 emFactory,
-                em -> em.createQuery("from User u", User.class)
+                em -> em.createQuery("from Product p", Product.class)
                         .getResultList()
         );
     }
 
     @Override
-    public void save(User user) {
+    public void save(Product product) {
         executeInTransaction(emFactory, em -> {
-            if (user.getId() == null) {
-                em.persist(user);
+            if (product.getId() == null) {
+                em.persist(product);
             } else {
-                em.merge(user);
+                em.merge(product);
             }
         });
     }
 
     @Override
-    public void delete(User user) {
-        executeInTransaction(emFactory, em -> em.remove(user));
+    public void delete(Product product) {
+        executeInTransaction(emFactory, em -> em.remove(product));
     }
 }

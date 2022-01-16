@@ -40,7 +40,10 @@ public class Order {
     )
     private User user;
 
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(
+            orphanRemoval = true,
+            cascade = CascadeType.ALL
+    )
     private Set<Item> items;
 
     @Override

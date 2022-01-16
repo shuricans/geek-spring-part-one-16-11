@@ -43,10 +43,7 @@ public class Price {
     )
     private LocalDateTime startDate;
 
-    @Column(
-            name = "end_date",
-            nullable = false
-    )
+    @Column(name = "end_date")
     private LocalDateTime endDate;
 
     @Override
