@@ -1,14 +1,15 @@
 package ru.geekbrains.persist;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @ToString
 @Getter
 @Setter
-@EqualsAndHashCode(of = {"id"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -25,6 +26,7 @@ public class User {
             generator = "users_sequence",
             strategy = GenerationType.SEQUENCE
     )
+    @Column(name = "user_id")
     private Long id;
 
     @Column(unique = true, nullable = false)
@@ -34,5 +36,19 @@ public class User {
             mappedBy = "user",
             orphanRemoval = true,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @ToString.Exclude
     private List<Order> orders;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return id != null && Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

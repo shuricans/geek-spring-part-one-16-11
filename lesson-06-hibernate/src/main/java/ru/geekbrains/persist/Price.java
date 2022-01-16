@@ -1,15 +1,15 @@
 package ru.geekbrains.persist;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-@ToString
 @Getter
 @Setter
-@EqualsAndHashCode(of = {"id"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -26,6 +26,7 @@ public class Price {
             generator = "prices_sequence",
             strategy = GenerationType.SEQUENCE
     )
+    @Column(name = "price_id")
     private Long id;
 
     @ManyToOne
@@ -35,9 +36,29 @@ public class Price {
     @Column(nullable = false, updatable = false)
     private BigDecimal value;
 
-    @Column(nullable = false, updatable = false)
+    @Column(
+            name = "start_date",
+            nullable = false,
+            updatable = false
+    )
     private LocalDateTime startDate;
 
-    @Column(nullable = false)
+    @Column(
+            name = "end_date",
+            nullable = false
+    )
     private LocalDateTime endDate;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Price price = (Price) o;
+        return id != null && Objects.equals(id, price.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

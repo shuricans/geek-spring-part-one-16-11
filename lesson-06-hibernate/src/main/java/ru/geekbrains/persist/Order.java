@@ -1,19 +1,19 @@
 package ru.geekbrains.persist;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 
-@ToString
 @Getter
 @Setter
-@EqualsAndHashCode(of = {"id"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "order")
+@Table(name = "ordr")
 public class Order {
 
     @Id
@@ -26,6 +26,7 @@ public class Order {
             generator = "orders_sequence",
             strategy = GenerationType.SEQUENCE
     )
+    @Column(name = "order_id")
     private Long id;
 
     @Column(nullable = false, updatable = false)
@@ -39,9 +40,21 @@ public class Order {
     )
     private User user;
 
-    @ManyToMany
+    @OneToMany(orphanRemoval = true)
     private Set<Item> items;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Order order = (Order) o;
+        return id != null && Objects.equals(id, order.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
 
 

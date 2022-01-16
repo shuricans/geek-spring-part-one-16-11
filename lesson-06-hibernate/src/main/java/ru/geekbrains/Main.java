@@ -12,7 +12,11 @@ public class Main {
         final ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
         final Dao<User> userDao = context.getBean("userDaoImpl", UserDaoImpl.class);
 
+        System.out.println("#############################################################");
         User sasha = new User(null, "Sasha", null);
+        System.out.println(sasha);
+        userDao.save(sasha);
+        System.out.println("=== AFTER userDao.save() ===");
         System.out.println(sasha);
     }
 }
