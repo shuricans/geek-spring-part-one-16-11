@@ -1,9 +1,13 @@
 package ru.geekbrains.persist;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Getter
@@ -33,6 +37,14 @@ public class Item {
 
     @Column(nullable = false)
     private Integer count;
+
+    // "сколько стоил товар в момент покупки клиентом"
+    @Column(nullable = false, updatable = false)
+    private BigDecimal price;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 
     @Override
     public boolean equals(Object o) {

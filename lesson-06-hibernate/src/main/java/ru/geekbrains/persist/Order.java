@@ -1,6 +1,9 @@
 package ru.geekbrains.persist;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -41,6 +44,7 @@ public class Order {
     private User user;
 
     @OneToMany(
+            mappedBy = "order",
             orphanRemoval = true,
             cascade = CascadeType.ALL
     )

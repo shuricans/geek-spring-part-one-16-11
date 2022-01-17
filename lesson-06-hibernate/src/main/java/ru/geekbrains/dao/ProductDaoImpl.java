@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @AllArgsConstructor
 @Component
-public class ProductDaoImpl implements Dao<Product> {
+public class ProductDaoImpl implements ProductDao, ExecuteForEntityManager {
 
     private final EntityManagerFactory emFactory;
 

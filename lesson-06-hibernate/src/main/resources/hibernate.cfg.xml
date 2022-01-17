@@ -28,10 +28,11 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hibernate.hbm2ddl.auto">create</property>
 
+        <property name="hibernate.enable_lazy_load_no_trans">true</property>
+
 
         <mapping class="ru.geekbrains.persist.User"/>
         <mapping class="ru.geekbrains.persist.Product"/>
-        <mapping class="ru.geekbrains.persist.Price"/>
         <mapping class="ru.geekbrains.persist.Order"/>
         <mapping class="ru.geekbrains.persist.Item"/>
 

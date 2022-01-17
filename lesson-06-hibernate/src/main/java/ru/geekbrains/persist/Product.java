@@ -4,7 +4,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.List;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 
@@ -33,13 +33,8 @@ public class Product {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @OneToMany(
-            mappedBy = "product",
-            orphanRemoval = true,
-            cascade = CascadeType.ALL
-    )
-    @ToString.Exclude
-    private List<Price> prices;
+    @Column(nullable = false, updatable = false)
+    private BigDecimal price;
 
     @Override
     public boolean equals(Object o) {
