@@ -33,7 +33,7 @@ public class Product {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     private BigDecimal price;
 
     @Override

@@ -158,7 +158,7 @@ ALTER TABLE ONLY item
     ADD CONSTRAINT fk_item_order_order_id FOREIGN KEY (order_id) REFERENCES ordr (order_id);
 
 
--- inserts data
+-- inserts users
 
 insert into usr (name) values ('Hendrika Bonde');
 insert into usr (name) values ('Had Fateley');
@@ -170,6 +170,8 @@ insert into usr (name) values ('Melessa Goodding');
 insert into usr (name) values ('Redford Aldcorne');
 insert into usr (name) values ('Julissa Lohmeyer');
 insert into usr (name) values ( 'Gaylord Dedney');
+
+-- inserts products
 
 insert into product (name, price) values ('Chicken - Whole Fryers', 895);
 insert into product (name, price) values ('Grouper - Fresh', 373);
@@ -191,3 +193,43 @@ insert into product (name, price) values ( 'Chocolate - Pistoles, Lactee, Milk',
 insert into product (name, price) values ( 'Juice - Ocean Spray Kiwi', 255);
 insert into product (name, price) values ( 'Ham - Cooked Italian', 467);
 insert into product (name, price) values ( 'Water - San Pellegrino', 445);
+
+
+-- make first three users as customers
+
+insert into customer (user_id) values (1);
+insert into customer (user_id) values (2);
+insert into customer (user_id) values (3);
+
+-- build orders for first customer
+
+insert into ordr (date, customer_id) values (now(), 1);
+insert into ordr (date, customer_id) values (now(), 2);
+insert into ordr (date, customer_id) values (now(), 3);
+
+-- products for first order
+
+insert into item (count, price, order_id, product_id)
+values (1, 895, 1, 1);
+insert into item (count, price, order_id, product_id)
+values (1, 373, 1, 2);
+insert into item (count, price, order_id, product_id)
+values (1, 269, 1, 3);
+
+-- products for second order
+
+insert into item (count, price, order_id, product_id)
+values (2, 895, 2, 1);
+insert into item (count, price, order_id, product_id)
+values (2, 373, 2, 2);
+insert into item (count, price, order_id, product_id)
+values (2, 800, 2, 6);
+
+-- products for third order
+
+insert into item (count, price, order_id, product_id)
+values (3, 895, 3, 1);
+insert into item (count, price, order_id, product_id)
+values (3, 269, 3, 3);
+insert into item (count, price, order_id, product_id)
+values (3, 850, 3, 9);

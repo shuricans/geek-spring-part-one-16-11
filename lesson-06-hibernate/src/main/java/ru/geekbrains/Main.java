@@ -4,13 +4,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ru.geekbrains.dao.ProductDao;
 import ru.geekbrains.dao.UserDao;
-import ru.geekbrains.persist.*;
+import ru.geekbrains.persist.Customer;
+import ru.geekbrains.persist.Product;
 import ru.geekbrains.service.CustomerService;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 public class Main {
 
@@ -22,33 +21,28 @@ public class Main {
         final ProductDao productDao = context.getBean(ProductDao.class);
         final CustomerService customerService = context.getBean(CustomerService.class);
 
-//        System.out.println(userDao.findAll());
-//        System.out.println();
-//        System.out.println(productDao.findAll());
-
-//        User user = new User(null, "sasha", null);
-//        user.setCustomer(new Customer(null, user, null));
-//
-//        Product productLaptop = new Product(null, "laptop", new BigDecimal(1000));
-//        Product productPhone = new Product(null, "iphone", new BigDecimal(700));
-//        productDao.save(productLaptop);
-//        productDao.save(productPhone);
-//
-//
-//        Order order = new Order(null, LocalDateTime.now(), user.getCustomer(), null);
-//        Item item1 = new Item(null, productLaptop, 1, productLaptop.getPrice(), order);
-//        Item item2 = new Item(null, productPhone, 1, productPhone.getPrice(), order);
-//        order.setItems(Set.of(item1, item2));
-//        user.getCustomer().setOrders(List.of(order));
-//
-//        userDao.save(user);
-
-        System.out.println("----- getCustomersByProductId ------");
-        List<Customer> customers = customerService.getCustomersByProductId(21L);
+        List<Customer> customers = customerService.getCustomersByProductId(1L);
         System.out.println(customers);
+        // assert equals:
+        // Customer(id=1, user=User(id=1, name=Hendrika Bonde))
+        // Customer(id=2, user=User(id=2, name=Had Fateley))
+        // Customer(id=3, user=User(id=3, name=Mateo McCabe))
 
-        System.out.println("----- getProductsByCustomerId ------");
+        // change price first product, named "Chicken - Whole Fryers"
+        productDao.findById(1L)
+                .ifPresent(product -> {
+                    product.setPrice(new BigDecimal(100));
+                    productDao.save(product);
+                });
+        productDao.findById(1L).ifPresent(System.out::println);
+        // assert equals:
+        // Product(id=1, name=Chicken - Whole Fryers, price=100.00)
+
         List<Product> products = customerService.getProductsByCustomerId(1L);
         System.out.println(products);
+        // assert equals:
+        // Product(id=1, name=Chicken - Whole Fryers, price=895.00)
+        // Product(id=2, name=Grouper - Fresh, price=373.00)
+        // Product(id=3, name=Wine - Ej Gallo Sonoma, price=269.00)
     }
 }
