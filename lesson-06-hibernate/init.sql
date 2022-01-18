@@ -1,119 +1,193 @@
-drop database if exists lesson_6;
+DROP DATABASE IF EXISTS lesson_6;
+CREATE DATABASE lesson_6 ENCODING = 'UTF8';
 
-create database lesson_6
-    with owner postgres;
+ALTER DATABASE lesson_6 OWNER TO postgres;
 
-create table usr
+
+-- Customer
+
+CREATE SEQUENCE customers_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER TABLE customers_sequence
+    OWNER TO postgres;
+
+CREATE TABLE customer
 (
-    user_id bigint       not null
-        constraint usr_pkey
-            primary key,
-    name    varchar(255) not null
-        constraint uk_mkjheedol1oe4evwyjw7ixpot
-            unique
+    customer_id  bigint NOT NULL DEFAULT nextval('customers_sequence'),
+    user_id bigint
 );
 
-alter table usr
-    owner to postgres;
+ALTER TABLE customer
+    OWNER TO postgres;
 
-create table product
+
+-- Item
+
+CREATE SEQUENCE items_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER TABLE items_sequence
+    OWNER TO postgres;
+
+CREATE TABLE item
 (
-    product_id bigint         not null
-        constraint product_pkey
-            primary key,
-    name       varchar(255)   not null
-        constraint uk_jmivyxk9rmgysrmsqw15lqr5b
-            unique,
-    price      numeric(19, 2) not null
+    item_id    bigint         NOT NULL DEFAULT nextval('items_sequence'),
+    count      integer        NOT NULL,
+    price      numeric(19, 2) NOT NULL,
+    order_id   bigint         NOT NULL,
+    product_id bigint         NOT NULL
 );
 
-alter table product
-    owner to postgres;
+ALTER TABLE item
+    OWNER TO postgres;
 
-create table ordr
+
+-- Order
+
+CREATE SEQUENCE orders_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER TABLE orders_sequence
+    OWNER TO postgres;
+
+CREATE TABLE ordr
 (
-    order_id bigint    not null
-        constraint ordr_pkey
-            primary key,
-    date     timestamp not null,
-    user_id  bigint    not null
-        constraint fko11n1286wqi57ikc73l16p88y
-            references usr
+    order_id    bigint                      NOT NULL DEFAULT nextval('orders_sequence'),
+    date        timestamp without time zone NOT NULL,
+    customer_id bigint
 );
 
-alter table ordr
-    owner to postgres;
+ALTER TABLE ordr
+    OWNER TO postgres;
 
-create table item
+
+-- Product
+
+CREATE SEQUENCE products_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER TABLE products_sequence
+    OWNER TO postgres;
+
+CREATE TABLE product
 (
-    item_id    bigint         not null
-        constraint item_pkey
-            primary key,
-    count      integer        not null,
-    price      numeric(19, 2) not null,
-    order_id   bigint         not null
-        constraint fkkty9tyryy8i41gvie1cjjwtgl
-            references ordr,
-    product_id bigint         not null
-        constraint fkd1g72rrhgq1sf7m4uwfvuhlhe
-            references product
+    product_id bigint                 NOT NULL DEFAULT nextval('products_sequence'),
+    name       character varying(255) NOT NULL,
+    price      numeric(19, 2)         NOT NULL
 );
 
-alter table item
-    owner to postgres;
-
-create sequence items_sequence;
-
-alter sequence items_sequence owner to postgres;
-
-create sequence orders_sequence;
-
-alter sequence orders_sequence owner to postgres;
-
-create sequence products_sequence;
-
-alter sequence products_sequence owner to postgres;
-
-create sequence users_sequence;
-
-alter sequence users_sequence owner to postgres;
-
-insert into usr (user_id, name) values (1, 'Hendrika Bonde');
-insert into usr (user_id, name) values (2, 'Had Fateley');
-insert into usr (user_id, name) values (3, 'Mateo McCabe');
-insert into usr (user_id, name) values (4, 'Alwin Crittal');
-insert into usr (user_id, name) values (5, 'Brooke Meddows');
-insert into usr (user_id, name) values (6, 'Gloriane Bemrose');
-insert into usr (user_id, name) values (7, 'Melessa Goodding');
-insert into usr (user_id, name) values (8, 'Redford Aldcorne');
-insert into usr (user_id, name) values (9, 'Julissa Lohmeyer');
-insert into usr (user_id, name) values (10, 'Gaylord Dedney');
-
-insert into product (product_id, name, price) values (1, 'Chicken - Whole Fryers', 895);
-insert into product (product_id, name, price) values (2, 'Grouper - Fresh', 373);
-insert into product (product_id, name, price) values (3, 'Wine - Ej Gallo Sonoma', 269);
-insert into product (product_id, name, price) values (4, 'Veal - Striploin', 200);
-insert into product (product_id, name, price) values (5, 'Wine - Sherry Dry Sack, William', 455);
-insert into product (product_id, name, price) values (6, 'Spring Roll Veg Mini', 800);
-insert into product (product_id, name, price) values (7, 'Chocolate - Sugar Free Semi Choc', 809);
-insert into product (product_id, name, price) values (8, 'Drambuie', 850);
-insert into product (product_id, name, price) values (9, 'Turkey - Breast, Boneless Sk On', 272);
-insert into product (product_id, name, price) values (10, 'Creme De Menthe Green', 132);
-insert into product (product_id, name, price) values (11, 'Juice - Orangina', 969);
-insert into product (product_id, name, price) values (12, 'Beef - Tenderloin Tails', 881);
-insert into product (product_id, name, price) values (13, 'Wine - White, Antinore Orvieto', 761);
-insert into product (product_id, name, price) values (14, 'Soda Water - Club Soda, 355 Ml', 824);
-insert into product (product_id, name, price) values (15, 'Carbonated Water - Orange', 279);
-insert into product (product_id, name, price) values (16, 'Cheese - Ermite Bleu', 521);
-insert into product (product_id, name, price) values (17, 'Chocolate - Pistoles, Lactee, Milk', 460);
-insert into product (product_id, name, price) values (18, 'Juice - Ocean Spray Kiwi', 255);
-insert into product (product_id, name, price) values (19, 'Ham - Cooked Italian', 467);
-insert into product (product_id, name, price) values (20, 'Water - San Pellegrino', 445);
+ALTER TABLE product
+    OWNER TO postgres;
 
 
+-- User
+
+CREATE SEQUENCE users_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER TABLE users_sequence
+    OWNER TO postgres;
+
+CREATE TABLE usr
+(
+    user_id bigint                 NOT NULL DEFAULT nextval('users_sequence'),
+    name    character varying(255) NOT NULL
+);
+
+ALTER TABLE usr
+    OWNER TO postgres;
+
+-- primary keys
+
+ALTER TABLE ONLY usr
+    ADD CONSTRAINT user_pkey PRIMARY KEY (user_id);
+
+ALTER TABLE ONLY customer
+    ADD CONSTRAINT customer_pkey PRIMARY KEY (customer_id);
+
+ALTER TABLE ONLY item
+    ADD CONSTRAINT item_pkey PRIMARY KEY (item_id);
+
+ALTER TABLE ONLY ordr
+    ADD CONSTRAINT order_pkey PRIMARY KEY (order_id);
+
+ALTER TABLE ONLY product
+    ADD CONSTRAINT product_pkey PRIMARY KEY (product_id);
+
+-- unique
+
+ALTER TABLE ONLY product
+    ADD CONSTRAINT uk_product_name UNIQUE (name);
+
+ALTER TABLE ONLY usr
+    ADD CONSTRAINT uk_user_name UNIQUE (name);
+
+-- foreign keys
+
+ALTER TABLE ONLY customer
+    ADD CONSTRAINT fk_customer_user_user_id FOREIGN KEY (user_id) REFERENCES usr (user_id);
+
+ALTER TABLE ONLY ordr
+    ADD CONSTRAINT fk_order_customer_customer_id FOREIGN KEY (customer_id) REFERENCES customer (customer_id);
+
+ALTER TABLE ONLY item
+    ADD CONSTRAINT fk_item_product_product_id FOREIGN KEY (product_id) REFERENCES product (product_id);
+
+ALTER TABLE ONLY item
+    ADD CONSTRAINT fk_item_order_order_id FOREIGN KEY (order_id) REFERENCES ordr (order_id);
 
 
+-- inserts data
 
+insert into usr (name) values ('Hendrika Bonde');
+insert into usr (name) values ('Had Fateley');
+insert into usr (name) values ('Mateo McCabe');
+insert into usr (name) values ('Alwin Crittal');
+insert into usr (name) values ('Brooke Meddows');
+insert into usr (name) values ('Gloriane Bemrose');
+insert into usr (name) values ('Melessa Goodding');
+insert into usr (name) values ('Redford Aldcorne');
+insert into usr (name) values ('Julissa Lohmeyer');
+insert into usr (name) values ( 'Gaylord Dedney');
 
-
-
+insert into product (name, price) values ('Chicken - Whole Fryers', 895);
+insert into product (name, price) values ('Grouper - Fresh', 373);
+insert into product (name, price) values ('Wine - Ej Gallo Sonoma', 269);
+insert into product (name, price) values ('Veal - Striploin', 200);
+insert into product (name, price) values ('Wine - Sherry Dry Sack, William', 455);
+insert into product (name, price) values ('Spring Roll Veg Mini', 800);
+insert into product (name, price) values ('Chocolate - Sugar Free Semi Choc', 809);
+insert into product (name, price) values ('Drambuie', 850);
+insert into product (name, price) values ('Turkey - Breast, Boneless Sk On', 272);
+insert into product (name, price) values ( 'Creme De Menthe Green', 132);
+insert into product (name, price) values ( 'Juice - Orangina', 969);
+insert into product (name, price) values ( 'Beef - Tenderloin Tails', 881);
+insert into product (name, price) values ( 'Wine - White, Antinore Orvieto', 761);
+insert into product (name, price) values ( 'Soda Water - Club Soda, 355 Ml', 824);
+insert into product (name, price) values ( 'Carbonated Water - Orange', 279);
+insert into product (name, price) values ( 'Cheese - Ermite Bleu', 521);
+insert into product (name, price) values ( 'Chocolate - Pistoles, Lactee, Milk', 460);
+insert into product (name, price) values ( 'Juice - Ocean Spray Kiwi', 255);
+insert into product (name, price) values ( 'Ham - Cooked Italian', 467);
+insert into product (name, price) values ( 'Water - San Pellegrino', 445);
