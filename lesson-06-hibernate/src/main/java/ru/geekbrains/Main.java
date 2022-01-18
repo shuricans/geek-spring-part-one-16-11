@@ -5,10 +5,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import ru.geekbrains.dao.ProductDao;
 import ru.geekbrains.dao.UserDao;
 import ru.geekbrains.persist.*;
-import ru.geekbrains.service.UserService;
+import ru.geekbrains.service.CustomerService;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,6 +29,7 @@ public class Main {
 
         final UserDao userDao = context.getBean(UserDao.class);
         final ProductDao productDao = context.getBean(ProductDao.class);
+        final CustomerService customerService = context.getBean(CustomerService.class);
 
         User user = new User(null, "sasha", null);
         user.setCustomer(new Customer(null, user, null));
@@ -48,6 +47,10 @@ public class Main {
         user.getCustomer().setOrders(List.of(order));
 
         userDao.save(user);
+
+        List<Customer> customers = customerService.getCustomersByProductId(1L);
+        System.out.println("customers.size() = " + customers.size());
+        System.out.println(customers);
 
 //        final ProductDao productDao = context.getBean(ProductDao.class);
 //        final UserService userService = context.getBean(UserService.class);

@@ -37,6 +37,7 @@ public class User {
             orphanRemoval = true,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}
     )
+    @ToString.Exclude
     private Customer customer;
 
     @Override
