@@ -32,12 +32,12 @@ public class User {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @OneToMany(
+    @OneToOne(
             mappedBy = "user",
             orphanRemoval = true,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @ToString.Exclude
-    private List<Order> orders;
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}
+    )
+    private Customer customer;
 
     @Override
     public boolean equals(Object o) {

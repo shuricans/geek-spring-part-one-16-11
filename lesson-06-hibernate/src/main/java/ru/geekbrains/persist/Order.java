@@ -36,12 +36,8 @@ public class Order {
     private LocalDateTime date;
 
     @ManyToOne
-    @JoinColumn(
-            name = "user_id",
-            nullable = false,
-            updatable = false
-    )
-    private User user;
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
     @OneToMany(
             mappedBy = "order",
