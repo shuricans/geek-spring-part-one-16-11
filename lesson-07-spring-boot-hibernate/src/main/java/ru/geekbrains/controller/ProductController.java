@@ -3,6 +3,7 @@ package ru.geekbrains.controller;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.persist.Product;
 import ru.geekbrains.persist.ProductRepository;
+import ru.geekbrains.persist.ProductSpecification;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
@@ -33,24 +35,44 @@ public class ProductController {
                            @RequestParam("minPrice") Optional<BigDecimal> minPrice,
                            @RequestParam("maxPrice") Optional<BigDecimal> maxPrice) {
 
-        List<Product> products;
+        // first way by @Query
+//        List<Product> products;
+//
+//        String nameLike = null;
+//        if (nameFilter.isPresent() && !nameFilter.get().isEmpty()) {
+//            nameLike = "%" + nameFilter.get().toLowerCase(Locale.ROOT) + "%";
+//        }
+//
+//        logger.info("Product filter, nameFilter = {}", nameLike);
+//        logger.info("Product filter, minPrice = {}", minPrice.orElse(null));
+//        logger.info("Product filter, maxPrice = {}", maxPrice.orElse(null));
+//
+//        products = productRepository.findByFilter(
+//                nameLike,
+//                minPrice.orElse(null),
+//                maxPrice.orElse(null)
+//        );
+//
+//        model.addAttribute("products", products);
 
-        String nameLike = null;
-        if (nameFilter.isPresent() && !nameFilter.get().isEmpty()) {
-            nameLike = "%" + nameFilter.get().toLowerCase(Locale.ROOT) + "%";
+        // second way by Specification
+        Specification<Product> spec = null;
+
+        if (nameFilter.isPresent() && !nameFilter.get().isBlank()) {
+            spec = Specification.where(ProductSpecification.nameLike(nameFilter.get().toLowerCase(Locale.ROOT)));
         }
 
-        logger.info("Product filter, nameFilter = {}", nameLike);
-        logger.info("Product filter, minPrice = {}", minPrice.orElse(null));
-        logger.info("Product filter, maxPrice = {}", maxPrice.orElse(null));
+        if (minPrice.isPresent()) {
+            spec = combineSpec(spec, ProductSpecification.minPriceFilter(minPrice.get()));
+        }
 
-        products = productRepository.findByFilter(
-                nameLike,
-                minPrice.orElse(null),
-                maxPrice.orElse(null)
-        );
+        if (maxPrice.isPresent()) {
+            spec = combineSpec(spec, ProductSpecification.maxPriceFilter(maxPrice.get()));
+        }
 
-        model.addAttribute("products", products);
+        spec = combineSpec(spec, Specification.where(null));
+
+        model.addAttribute("products", productRepository.findAll(spec));
         return "product";
     }
 
@@ -93,5 +115,9 @@ public class ProductController {
     public String notFoundExceptionHandler(NotFoundException ex, Model model) {
         model.addAttribute("message", ex.getMessage());
         return "not_found";
+    }
+
+    private <T> Specification<T> combineSpec(Specification<T> s1, Specification<T> s2) {
+        return s1 == null ? Specification.where(s2) : s1.and(s2);
     }
 }
