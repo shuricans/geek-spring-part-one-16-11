@@ -1,6 +1,8 @@
 package ru.geekbrains.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,16 +13,14 @@ import ru.geekbrains.persist.ProductRepository;
 
 import javax.validation.Valid;
 
+@AllArgsConstructor
 @Controller
 @RequestMapping("/product")
 public class ProductController {
 
-    private final ProductRepository productRepository;
+    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
-    @Autowired
-    public ProductController(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+    private final ProductRepository productRepository;
 
     @GetMapping
     public String listPage(Model model) {
@@ -47,6 +47,18 @@ public class ProductController {
             return "product_form";
         }
         productRepository.save(product);
+        return "redirect:/product";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") Long id) {
+        logger.info("You will try to delete a product with = {}", id);
+        if (productRepository.existsById(id)) {
+            productRepository.deleteById(id);
+            logger.info("Product with id = {} deleted successfully", id);
+        } else {
+            logger.info("id = {} does not exist", id);
+        }
         return "redirect:/product";
     }
 
