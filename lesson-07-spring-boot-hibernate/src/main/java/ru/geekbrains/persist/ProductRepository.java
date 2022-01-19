@@ -12,9 +12,9 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     List<Product> findByNameContainsIgnoreCase(String pattern);
 
     @Query("select p from Product p where" +
-            " (p.name like :pattern or :pattern is null) and" +
-            " (p.price >= :minPrice or :minPrice is null) and" +
-            " (p.price <= :maxPrice or :maxPrice is null)")
+            " (lower(p.name) like :pattern or :pattern is null) and" +
+            " (:minPrice is null or p.price >= :minPrice) and" +
+            " (:maxPrice is null or p.price <= :maxPrice)")
     List<Product> findByFilter(@Param("pattern") String pattern,
                                @Param("minPrice") BigDecimal minPrice,
                                @Param("maxPrice") BigDecimal maxPrice);

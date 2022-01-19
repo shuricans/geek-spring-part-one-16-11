@@ -15,6 +15,7 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -31,19 +32,20 @@ public class ProductController {
                            @RequestParam("nameFilter") Optional<String> nameFilter,
                            @RequestParam("minPrice") Optional<BigDecimal> minPrice,
                            @RequestParam("maxPrice") Optional<BigDecimal> maxPrice) {
-        logger.info("Product filter with name pattern {}", nameFilter.orElse(null));
 
         List<Product> products;
 
-        // First way
-//        if (nameFilter.isPresent() && !nameFilter.get().isBlank()) {
-//            products = productRepository.findByNameContainsIgnoreCase(nameFilter.get());
-//        } else {
-//            products = productRepository.findAll();
-//        }
+        String nameLike = null;
+        if (nameFilter.isPresent() && !nameFilter.get().isEmpty()) {
+            nameLike = "%" + nameFilter.get().toLowerCase(Locale.ROOT) + "%";
+        }
+
+        logger.info("Product filter, nameFilter = {}", nameLike);
+        logger.info("Product filter, minPrice = {}", minPrice.orElse(null));
+        logger.info("Product filter, maxPrice = {}", maxPrice.orElse(null));
 
         products = productRepository.findByFilter(
-                nameFilter.orElse(null),
+                nameLike,
                 minPrice.orElse(null),
                 maxPrice.orElse(null)
         );
