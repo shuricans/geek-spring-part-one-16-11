@@ -12,6 +12,10 @@ import ru.geekbrains.persist.Product;
 import ru.geekbrains.persist.ProductRepository;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Controller
@@ -23,8 +27,28 @@ public class ProductController {
     private final ProductRepository productRepository;
 
     @GetMapping
-    public String listPage(Model model) {
-        model.addAttribute("products", productRepository.findAll());
+    public String listPage(Model model,
+                           @RequestParam("nameFilter") Optional<String> nameFilter,
+                           @RequestParam("minPrice") Optional<BigDecimal> minPrice,
+                           @RequestParam("maxPrice") Optional<BigDecimal> maxPrice) {
+        logger.info("Product filter with name pattern {}", nameFilter.orElse(null));
+
+        List<Product> products;
+
+        // First way
+//        if (nameFilter.isPresent() && !nameFilter.get().isBlank()) {
+//            products = productRepository.findByNameContainsIgnoreCase(nameFilter.get());
+//        } else {
+//            products = productRepository.findAll();
+//        }
+
+        products = productRepository.findByFilter(
+                nameFilter.orElse(null),
+                minPrice.orElse(null),
+                maxPrice.orElse(null)
+        );
+
+        model.addAttribute("products", products);
         return "product";
     }
 
