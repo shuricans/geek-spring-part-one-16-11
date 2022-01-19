@@ -39,13 +39,16 @@
                 <input type="hidden" id="id" name="id" th:field="*{id}">
                 <div class="form-group">
                     <label>Name</label>
-                    <input th:field="*{name}" type="text" th:attr="class=${#fields.hasErrors('name') ? 'form-control is-invalid' : 'form-control'}"
+                    <input th:field="*{name}" type="text"
+                           th:attr="class=${#fields.hasErrors('name') ? 'form-control is-invalid' : 'form-control'}"
                            id="name" name="product-name" placeholder="Enter name" required>
                     <p class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
                     <label>Description</label>
-                    <input th:field="*{description}" type="text" class="form-control" id="description" name="product-description" placeholder="Enter description">
+                    <input th:field="*{description}" type="text" class="form-control" id="description"
+                           name="product-description" placeholder="Enter description">
                     <label>Price</label>
-                    <input th:field="*{price}" type="number" th:attr="class=${#fields.hasErrors('price') ? 'form-control is-invalid' : 'form-control'}"
+                    <input th:field="*{price}" type="number"
+                           th:attr="class=${#fields.hasErrors('price') ? 'form-control is-invalid' : 'form-control'}"
                            id="price" name="product-price" placeholder="Enter price" required>
                     <p class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></p>
                 </div>

@@ -15,8 +15,6 @@ import ru.geekbrains.persist.ProductSpecification;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
