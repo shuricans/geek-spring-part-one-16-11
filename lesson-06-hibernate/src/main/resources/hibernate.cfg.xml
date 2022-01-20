@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+    <session-factory>
+
+        <!-- Database connection settings -->
+        <property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="connection.url">jdbc:postgresql://10.0.0.82:5432/lesson_6</property>
+        <property name="connection.username">postgres</property>
+        <property name="connection.password">123</property>
+
+        <!-- JDBC connection pool (use the built-in) -->
+        <property name="connection.pool_size">1</property>
+
+        <property name="current_session_context_class">thread</property>
+
+        <!-- SQL dialect -->
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
+
+        <!-- Echo all executed SQL to stdout -->
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+
+        <!-- Drop and re-create the database schema on startup -->
+        <property name="hibernate.hbm2ddl.auto">validate</property>
+
+        <property name="hibernate.enable_lazy_load_no_trans">true</property>
+
+
+        <mapping class="ru.geekbrains.persist.User"/>
+        <mapping class="ru.geekbrains.persist.Product"/>
+        <mapping class="ru.geekbrains.persist.Order"/>
+        <mapping class="ru.geekbrains.persist.Item"/>
+        <mapping class="ru.geekbrains.persist.Customer"/>
+
+    </session-factory>
+
+</hibernate-configuration>
