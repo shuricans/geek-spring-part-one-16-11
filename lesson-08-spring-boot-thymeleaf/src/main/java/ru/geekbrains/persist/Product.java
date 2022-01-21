@@ -3,9 +3,6 @@ package ru.geekbrains.persist;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 
 
@@ -31,15 +28,12 @@ public class Product {
     @Column(name = "product_id")
     private Long id;
 
-    @NotBlank
     @Column(unique = true, nullable = false)
     private String name;
 
     @Column
     private String description;
 
-    @PositiveOrZero
-    @NotNull
     @Column(nullable = false)
     private BigDecimal price;
 }
