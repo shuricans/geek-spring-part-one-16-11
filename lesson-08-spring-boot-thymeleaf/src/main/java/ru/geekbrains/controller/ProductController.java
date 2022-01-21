@@ -96,7 +96,7 @@ public class ProductController {
         return "redirect:/product";
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") Long id) {
         logger.info("You will try to delete a product with = {}", id);
         if (productRepository.existsById(id)) {
