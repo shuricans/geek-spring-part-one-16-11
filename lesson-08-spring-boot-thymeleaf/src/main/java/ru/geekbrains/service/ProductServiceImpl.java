@@ -29,7 +29,8 @@ public class ProductServiceImpl implements ProductService {
             Optional<BigDecimal> minPrice,
             Optional<BigDecimal> maxPrice,
             Integer page,
-            Integer size) {
+            Integer size,
+            String sortField) {
         Specification<Product> spec = null;
 
         if (nameFilter.isPresent() && !nameFilter.get().isBlank()) {
@@ -47,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
 
         spec = combineSpec(spec, Specification.where(null));
 
-        return productRepository.findAll(spec, PageRequest.of(page, size))
+        return productRepository.findAll(spec, PageRequest.of(page, size, Sort.by(sortField)))
                 .map(ProductServiceImpl::convertProductToProductDto);
     }
 

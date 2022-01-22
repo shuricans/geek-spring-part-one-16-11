@@ -13,7 +13,8 @@ public interface ProductService {
             Optional<BigDecimal> minPrice,
             Optional<BigDecimal> maxPrice,
             Integer page,
-            Integer size);
+            Integer size,
+            String sortField);
 
     Optional<ProductDto> findById(Long id);
 

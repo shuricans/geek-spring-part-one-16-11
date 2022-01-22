@@ -32,8 +32,15 @@ public class ProductController {
                            @RequestParam("minPrice") Optional<BigDecimal> minPrice,
                            @RequestParam("maxPrice") Optional<BigDecimal> maxPrice,
                            @RequestParam("page") Optional<Integer> page,
-                           @RequestParam("size") Optional<Integer> size) {
+                           @RequestParam("size") Optional<Integer> size,
+                           @RequestParam("sortField") Optional<String> sortField) {
 
+        String sortBy;
+        if (sortField.isPresent() && !sortField.get().isEmpty()) {
+            sortBy = sortField.get();
+        } else {
+            sortBy = "id";
+        }
         model.addAttribute(
                 "products",
                 productService.findAll(
@@ -41,7 +48,8 @@ public class ProductController {
                         minPrice,
                         maxPrice,
                         page.orElse(1) - 1,
-                        size.orElse(6)
+                        size.orElse(6),
+                        sortBy
                 ));
         return "product";
     }
