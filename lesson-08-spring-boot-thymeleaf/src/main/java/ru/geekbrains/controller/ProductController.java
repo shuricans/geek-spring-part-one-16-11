@@ -30,14 +30,18 @@ public class ProductController {
     public String listPage(Model model,
                            @RequestParam("nameFilter") Optional<String> nameFilter,
                            @RequestParam("minPrice") Optional<BigDecimal> minPrice,
-                           @RequestParam("maxPrice") Optional<BigDecimal> maxPrice) {
+                           @RequestParam("maxPrice") Optional<BigDecimal> maxPrice,
+                           @RequestParam("page") Optional<Integer> page,
+                           @RequestParam("size") Optional<Integer> size) {
 
         model.addAttribute(
                 "products",
                 productService.findAll(
                         nameFilter,
                         minPrice,
-                        maxPrice
+                        maxPrice,
+                        page.orElse(1) - 1,
+                        size.orElse(6)
                 ));
         return "product";
     }

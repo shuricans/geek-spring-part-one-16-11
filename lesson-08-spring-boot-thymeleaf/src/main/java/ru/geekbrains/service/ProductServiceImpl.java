@@ -1,16 +1,20 @@
 package ru.geekbrains.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import ru.geekbrains.persist.*;
+import ru.geekbrains.persist.Category;
+import ru.geekbrains.persist.Product;
+import ru.geekbrains.persist.ProductRepository;
+import ru.geekbrains.persist.ProductSpecification;
 import ru.geekbrains.service.dto.ProductDto;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -20,7 +24,12 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryService categoryService;
 
     @Override
-    public List<ProductDto> findAll(Optional<String> nameFilter, Optional<BigDecimal> minPrice, Optional<BigDecimal> maxPrice) {
+    public Page<ProductDto> findAll(
+            Optional<String> nameFilter,
+            Optional<BigDecimal> minPrice,
+            Optional<BigDecimal> maxPrice,
+            Integer page,
+            Integer size) {
         Specification<Product> spec = null;
 
         if (nameFilter.isPresent() && !nameFilter.get().isBlank()) {
@@ -38,11 +47,8 @@ public class ProductServiceImpl implements ProductService {
 
         spec = combineSpec(spec, Specification.where(null));
 
-        return productRepository
-                .findAll(spec)
-                .stream()
-                .map(ProductServiceImpl::convertProductToProductDto)
-                .collect(Collectors.toList());
+        return productRepository.findAll(spec, PageRequest.of(page, size))
+                .map(ProductServiceImpl::convertProductToProductDto);
     }
 
     @Override

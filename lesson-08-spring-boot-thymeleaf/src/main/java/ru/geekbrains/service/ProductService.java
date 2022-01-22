@@ -1,17 +1,19 @@
 package ru.geekbrains.service;
 
+import org.springframework.data.domain.Page;
 import ru.geekbrains.service.dto.ProductDto;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 
 public interface ProductService {
 
-    List<ProductDto> findAll(
+    Page<ProductDto> findAll(
             Optional<String> nameFilter,
             Optional<BigDecimal> minPrice,
-            Optional<BigDecimal> maxPrice);
+            Optional<BigDecimal> maxPrice,
+            Integer page,
+            Integer size);
 
     Optional<ProductDto> findById(Long id);
 
