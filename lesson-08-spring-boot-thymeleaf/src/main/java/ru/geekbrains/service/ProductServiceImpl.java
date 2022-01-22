@@ -3,9 +3,7 @@ package ru.geekbrains.service;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import ru.geekbrains.persist.Product;
-import ru.geekbrains.persist.ProductRepository;
-import ru.geekbrains.persist.ProductSpecification;
+import ru.geekbrains.persist.*;
 import ru.geekbrains.service.dto.ProductDto;
 
 import java.math.BigDecimal;
@@ -19,6 +17,7 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final CategoryService categoryService;
 
     @Override
     public List<ProductDto> findAll(Optional<String> nameFilter, Optional<BigDecimal> minPrice, Optional<BigDecimal> maxPrice) {
@@ -64,11 +63,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto save(ProductDto productDto) {
+        Category category = categoryService.findById(productDto.getCategoryId()).orElse(null);
         Product product = new Product(
                 productDto.getId(),
                 productDto.getName(),
                 productDto.getDescription(),
-                productDto.getPrice());
+                productDto.getPrice(),
+                category);
         return convertProductToProductDto(productRepository.save(product));
     }
 
@@ -77,7 +78,9 @@ public class ProductServiceImpl implements ProductService {
                 p.getId(),
                 p.getName(),
                 p.getDescription(),
-                p.getPrice());
+                p.getPrice(),
+                p.getCategory() != null ? p.getCategory().getId() : null,
+                p.getCategory() != null ? p.getCategory().getName() : null);
     }
 
 

@@ -25,4 +25,8 @@ public class ProductDto {
     @PositiveOrZero
     @NotNull(message = "please set the price")
     private BigDecimal price;
+
+    private Long categoryId;
+
+    private String categoryName;
 }

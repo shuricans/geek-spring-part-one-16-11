@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.geekbrains.service.CategoryService;
 import ru.geekbrains.service.ProductService;
 import ru.geekbrains.service.dto.ProductDto;
 
@@ -23,6 +24,7 @@ public class ProductController {
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     private final ProductService productService;
+    private final CategoryService categoryService;
 
     @GetMapping
     public String listPage(Model model,
@@ -44,12 +46,14 @@ public class ProductController {
     public String edit(@PathVariable("id") Long id, Model model) {
         model.addAttribute("product", productService.findById(id)
                 .orElseThrow(() -> new NotFoundException("Product not found")));
+        model.addAttribute("categories", categoryService.findAll());
         return "product_form";
     }
 
     @GetMapping("/new")
     public String create(Model model) {
         model.addAttribute("product", new ProductDto());
+        model.addAttribute("categories", categoryService.findAll());
         return "product_form";
     }
 
