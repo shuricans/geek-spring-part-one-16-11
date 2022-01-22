@@ -60,51 +60,11 @@
             <table class="table table-bordered my-2">
                 <thead>
                 <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Name
-                        <a th:href="@{/product(
-                               nameFilter=${param.nameFilter},
-                               minPrice=${param.minPrice},
-                               maxPrice=${param.maxPrice},
-                               page=${param.page},
-                               size=${param.size},
-                               sortField='name')}">
-                            <i class="fa fa-sort-down"></i>
-                        </a>
-                    </th>
-                    <th scope="col">Description
-                        <a th:href="@{/product(
-                               nameFilter=${param.nameFilter},
-                               minPrice=${param.minPrice},
-                               maxPrice=${param.maxPrice},
-                               page=${param.page},
-                               size=${param.size},
-                               sortField='description')}">
-                            <i class="fa fa-sort-down"></i>
-                        </a>
-                    </th>
-                    <th scope="col">Category
-                        <a th:href="@{/product(
-                               nameFilter=${param.nameFilter},
-                               minPrice=${param.minPrice},
-                               maxPrice=${param.maxPrice},
-                               page=${param.page},
-                               size=${param.size},
-                               sortField='category.name')}">
-                            <i class="fa fa-sort-down"></i>
-                        </a>
-                    </th>
-                    <th scope="col">Price
-                        <a th:href="@{/product(
-                               nameFilter=${param.nameFilter},
-                               minPrice=${param.minPrice},
-                               maxPrice=${param.maxPrice},
-                               page=${param.page},
-                               size=${param.size},
-                               sortField='price')}">
-                            <i class="fa fa-sort-down"></i>
-                        </a>
-                    </th>
+                    <th th:replace="fragments/sort_header :: sort_header('Id', 'id')"></th>
+                    <th th:replace="fragments/sort_header :: sort_header('Name', 'name')"></th>
+                    <th th:replace="fragments/sort_header :: sort_header('Description', 'description')"></th>
+                    <th th:replace="fragments/sort_header :: sort_header('Category', 'category.name')"></th>
+                    <th th:replace="fragments/sort_header :: sort_header('Price', 'price')"></th>
                     <th scope="col">Actions</th>
                 </tr>
                 </thead>
