@@ -30,7 +30,8 @@ public class ProductServiceImpl implements ProductService {
             Optional<BigDecimal> maxPrice,
             Integer page,
             Integer size,
-            String sortField) {
+            String sortField,
+            Sort.Direction direction) {
         Specification<Product> spec = null;
 
         if (nameFilter.isPresent() && !nameFilter.get().isBlank()) {
@@ -48,7 +49,7 @@ public class ProductServiceImpl implements ProductService {
 
         spec = combineSpec(spec, Specification.where(null));
 
-        return productRepository.findAll(spec, PageRequest.of(page, size, Sort.by(sortField)))
+        return productRepository.findAll(spec, PageRequest.of(page, size, Sort.by(direction, sortField)))
                 .map(ProductServiceImpl::convertProductToProductDto);
     }
 

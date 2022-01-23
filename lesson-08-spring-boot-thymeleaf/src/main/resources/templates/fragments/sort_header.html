@@ -2,14 +2,23 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <th th:fragment="sort_header(header, column)" scope="col">[[${header}]]
-    <a th:href="@{/product(
+    <a th:with="isSorted=${#strings.startsWith(products.sort, column)}"
+            th:href="@{/product(
                                nameFilter=${param.nameFilter},
                                minPrice=${param.minPrice},
                                maxPrice=${param.maxPrice},
                                page=${param.page},
                                size=${param.size},
-                               sortField=${column})}">
-        <i class="fa fa-sort-down"></i>
+                               sortField=${column},
+                               sortDir=${isSorted && #strings.endsWith(products.sort, 'ASC') ? 'DESC' : 'ASC'})}">
+        <i class="fa"
+           style="font-size:20px;"
+           th:styleappend="${isSorted} ? 'color:red' : 'color:grey'"
+           th:classappend="${(isSorted && #strings.endsWith(products.sort, 'ASC') ? 'fa-sort-up':'') +
+                             (isSorted && #strings.endsWith(products.sort, 'DESC') ? 'fa-sort-down':'') +
+                             (!isSorted ? 'fa-sort':'')}"
+        >
+        </i>
     </a>
 </th>
 
