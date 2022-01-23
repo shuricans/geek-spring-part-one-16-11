@@ -1,6 +1,6 @@
 FROM adoptopenjdk/openjdk11:alpine-jre
 
-ARG JAR_FILE=./lesson-07-spring-boot-hibernate-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=./lesson-08-spring-boot-thymeleaf-0.0.1-SNAPSHOT.jar
 
 # cd /opt/app
 WORKDIR /opt/app
