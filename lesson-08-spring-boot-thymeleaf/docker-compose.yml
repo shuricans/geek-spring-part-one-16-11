@@ -1,13 +1,13 @@
 version: "3.9"
 services:
   server:
-    container_name: lesson_7_app
-    image: lesson_8_app:latest
+    container_name: lesson_8_app
+    image: shuricans/app:lesson_08
     restart: unless-stopped
     ports:
       - "8080:8080"
     environment:
-      spring.datasource.url: "jdbc:postgresql://db:5432/lesson_7"
+      spring.datasource.url: "jdbc:postgresql://db:5432/lesson_8"
       spring.datasource.username: postgres
       spring.datasource.password: 123
     networks:
