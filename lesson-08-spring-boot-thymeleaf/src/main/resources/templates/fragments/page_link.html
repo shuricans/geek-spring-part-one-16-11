@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<a th:fragment="page_link(numberPage, textLink)" class="page-link"
+<a th:fragment="page_link(class, numberPage, size, textLink)" th:class="${class}"
    th:href="@{/product(
                                nameFilter=${param.nameFilter},
                                minPrice=${param.minPrice},
                                maxPrice=${param.maxPrice},
                                page=${numberPage},
-                               size=${param.size},
+                               size=${size},
                                sortField=${param.sortField})}"
    th:text="${textLink}"></a>
 

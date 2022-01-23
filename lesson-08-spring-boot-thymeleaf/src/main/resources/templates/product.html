@@ -97,22 +97,47 @@
             </table>
         </div>
         <div th:unless="${products.empty}" class="col-12">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li th:classappend="${products.number == 0} ? 'disabled'" class="page-item">
-                        <a th:replace="fragments/page_link :: page_link(${products.number}, 'Previous')"></a>
-                    </li>
+            <div class="row">
+                <div class="col-md-auto">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-left">
+                            <li th:classappend="${products.number == 0} ? 'disabled'" class="page-item">
+                                <a th:replace="fragments/page_link ::
+                                 page_link('page-link', ${products.number}, ${products.size}, 'Previous')"></a>
+                            </li>
 
-                    <li th:each="num : ${#numbers.sequence(1, products.totalPages)}"
-                        th:classappend="${num == products.number + 1} ? 'active'" class="page-item">
-                        <a th:replace="fragments/page_link :: page_link(${num}, ${num})"></a>
-                    </li>
+                            <li th:each="num : ${#numbers.sequence(1, products.totalPages)}"
+                                th:classappend="${num == products.number + 1} ? 'active'" class="page-item">
+                                <a th:replace="fragments/page_link ::
+                                 page_link('page-link', ${num}, ${products.size}, ${num})"></a>
+                            </li>
 
-                    <li th:classappend="${products.number + 1 == products.totalPages} ? 'disabled'" class="page-item">
-                        <a th:replace="fragments/page_link :: page_link(${products.number + 2}, 'Next')"></a>
-                    </li>
-                </ul>
-            </nav>
+                            <li th:classappend="${products.number + 1 == products.totalPages} ? 'disabled'"
+                                class="page-item">
+                                <a th:replace="fragments/page_link ::
+                                 page_link('page-link', ${products.number + 2}, ${products.size}, 'Next')"></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-md-auto">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle"
+                                type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false">
+                            show [[${products.size}]]
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a th:replace="fragments/page_link :: page_link('dropdown-item', 1, 5, 5)"></a>
+                            <a th:replace="fragments/page_link :: page_link('dropdown-item', 1, 10, 10)"></a>
+                            <a th:replace="fragments/page_link :: page_link('dropdown-item', 1, 20, 20)"></a>
+                            <a th:replace="fragments/page_link :: page_link('dropdown-item', 1, 40, 40)"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

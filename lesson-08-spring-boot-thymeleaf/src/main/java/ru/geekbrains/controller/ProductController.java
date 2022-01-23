@@ -48,7 +48,7 @@ public class ProductController {
                         minPrice,
                         maxPrice,
                         page.orElse(1) - 1,
-                        size.orElse(6),
+                        size.orElse(10),
                         sortBy
                 ));
         return "product";
