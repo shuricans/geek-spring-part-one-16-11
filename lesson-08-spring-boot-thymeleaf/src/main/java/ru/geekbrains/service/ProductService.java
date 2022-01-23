@@ -1,6 +1,7 @@
 package ru.geekbrains.service;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import ru.geekbrains.service.dto.ProductDto;
 
 import java.math.BigDecimal;
@@ -14,7 +15,8 @@ public interface ProductService {
             Optional<BigDecimal> maxPrice,
             Integer page,
             Integer size,
-            String sortField);
+            String sortField,
+            Sort.Direction direction);
 
     Optional<ProductDto> findById(Long id);
 

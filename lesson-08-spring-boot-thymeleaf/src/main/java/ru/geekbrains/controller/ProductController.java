@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.service.CategoryService;
 import ru.geekbrains.service.ProductService;
 import ru.geekbrains.service.dto.ProductDto;
+import org.springframework.data.domain.Sort;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
@@ -33,7 +34,8 @@ public class ProductController {
                            @RequestParam("maxPrice") Optional<BigDecimal> maxPrice,
                            @RequestParam("page") Optional<Integer> page,
                            @RequestParam("size") Optional<Integer> size,
-                           @RequestParam("sortField") Optional<String> sortField) {
+                           @RequestParam("sortField") Optional<String> sortField,
+                           @RequestParam("sortDir") Optional<Sort.Direction> sortDir) {
 
         String sortBy;
         if (sortField.isPresent() && !sortField.get().isEmpty()) {
@@ -49,7 +51,8 @@ public class ProductController {
                         maxPrice,
                         page.orElse(1) - 1,
                         size.orElse(10),
-                        sortBy
+                        sortBy,
+                        sortDir.orElse(Sort.Direction.ASC)
                 ));
         return "product";
     }
