@@ -26,6 +26,7 @@
         <module>lesson-06-hibernate</module>
         <module>lesson-07-spring-boot-hibernate</module>
         <module>lesson-08-spring-boot-thymeleaf</module>
+        <module>lesson-09-spring-boot-rest</module>
     </modules>
 
 </project>
