@@ -1,5 +1,6 @@
 package ru.geekbrains.persist;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,5 +34,6 @@ public class Category {
 
     @OneToMany(mappedBy = "category")
     @ToString.Exclude
+    @JsonIgnore
     private List<Product> products;
 }

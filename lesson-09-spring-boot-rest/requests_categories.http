@@ -1,0 +1,28 @@
+GET http://localhost:8080/api/v1/category
+
+###
+
+GET http://localhost:8080/api/v1/category/3
+
+###
+
+POST http://localhost:8080/api/v1/category
+Content-Type: application/json
+
+{
+  "name": "New food category"
+}
+
+###
+
+PUT http://localhost:8080/api/v1/category
+Content-Type: application/json
+
+{
+  "id": 5,
+  "name": "Delicious bread"
+}
+
+###
+
+DELETE http://localhost:8080/api/v1/category/6
