@@ -71,7 +71,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto save(ProductDto productDto) {
-        Category category = categoryService.findById(productDto.getCategoryId()).orElse(null);
+        Category category = categoryService.findById(productDto.getCategoryId())
+                .map(catDto -> new Category(catDto.getId(), catDto.getName(), null))
+                .orElse(null);
+
         Product product = new Product(
                 productDto.getId(),
                 productDto.getName(),
