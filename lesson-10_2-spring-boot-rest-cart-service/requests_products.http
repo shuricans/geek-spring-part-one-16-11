@@ -1,0 +1,35 @@
+GET http://localhost:8080/api/v1/product
+
+###
+
+GET http://localhost:8080/api/v1/product/19
+
+###
+
+
+POST http://localhost:8080/api/v1/product
+Content-Type: application/json
+
+{
+  "name": "11 asdgasdfasdf 11",
+  "description": "123 asdfasdfs",
+  "price": 4432.00,
+  "categoryId": 1
+}
+
+###
+
+PUT http://localhost:8080/api/v1/product
+Content-Type: application/json
+
+{
+  "id": 22,
+  "name": "11 asd 112345",
+  "description": "123 asdfasdfs",
+  "price": 4432.00,
+  "categoryId": 1
+}
+
+###
+
+DELETE http://localhost:8080/api/v1/product/22
