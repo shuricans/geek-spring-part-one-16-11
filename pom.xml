@@ -27,6 +27,7 @@
         <module>lesson-07-spring-boot-hibernate</module>
         <module>lesson-08-spring-boot-thymeleaf</module>
         <module>lesson-09-spring-boot-rest</module>
+        <module>lesson-10_2-spring-boot-rest-cart-service</module>
     </modules>
 
 </project>
