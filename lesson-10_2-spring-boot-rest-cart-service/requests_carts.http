@@ -1,0 +1,86 @@
+### Create new cart
+# POST without body
+POST http://localhost:8080/api/v1/cart/create
+
+### Delete cart by id
+DELETE http://localhost:8080/api/v1/cart/1
+
+### Get cart by id
+GET http://localhost:8080/api/v1/cart/1
+
+### 1. Update cart by id
+# POST with body
+# All previous items will be replace on provided in request
+# Example with minimum required parameters
+PUT http://localhost:8080/api/v1/cart/1
+Content-Type: application/json
+
+[
+  {
+    "product": {
+      "id": 1
+    }
+  }
+]
+
+### 2. Update cart by id
+# POST with body
+# All previous items will be replace on provided in request
+# Example with additional parameters
+PUT http://localhost:8080/api/v1/cart/1
+Content-Type: application/json
+
+[
+  {
+    "product": {
+      "id": 1
+    }
+  },
+  {
+    "product": {
+      "id": 2
+    },
+    "quantity": 1,
+    "price": 1000
+  }
+]
+
+### 3. Update cart by id, remove product - first way
+# POST with body
+# Example with additional parameters
+# remove if quantity <= 0
+PUT http://localhost:8080/api/v1/cart/1
+Content-Type: application/json
+
+[
+  {
+    "product": {
+      "id": 1
+    },
+    "quantity": 2
+  },
+  {
+    "product": {
+      "id": 2
+    },
+    "quantity": 0
+  }
+]
+
+### 4. Update cart by id, remove product - second way
+# POST with body
+# Example with additional parameters
+# Send only what you need to leave
+PUT http://localhost:8080/api/v1/cart/1
+Content-Type: application/json
+
+[
+  {
+    "product": {
+      "id": 1
+    },
+    "quantity": 2
+  }
+]
+
+

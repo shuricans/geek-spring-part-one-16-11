@@ -21,6 +21,7 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
 
     @Override
     public Page<ProductDto> findAll(
@@ -49,13 +50,13 @@ public class ProductServiceImpl implements ProductService {
         spec = combineSpec(spec, Specification.where(null));
 
         return productRepository.findAll(spec, PageRequest.of(page, size, Sort.by(direction, sortField)))
-                .map(ProductMapper.INSTANCE::fromProduct);
+                .map(productMapper::fromProduct);
     }
 
     @Override
     public Optional<ProductDto> findById(Long id) {
         return productRepository.findById(id)
-                .map(ProductMapper.INSTANCE::fromProduct);
+                .map(productMapper::fromProduct);
     }
 
     @Override
@@ -70,9 +71,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto save(ProductDto productDto) {
-        Product product = ProductMapper.INSTANCE.toProduct(productDto);
+        Product product = productMapper.toProduct(productDto);
         product = productRepository.save(product);
-        return ProductMapper.INSTANCE.fromProduct(product);
+        return productMapper.fromProduct(product);
     }
 
     private <T> Specification<T> combineSpec(Specification<T> s1, Specification<T> s2) {
