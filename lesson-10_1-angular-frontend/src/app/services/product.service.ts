@@ -24,4 +24,8 @@ export class ProductService {
     }
     return this.http.post<Product>(`api/v1/product`, product);
   }
+
+  public delete(id: number | null) {
+    return this.http.delete(`api/v1/product/${id}`);
+  }
 }
