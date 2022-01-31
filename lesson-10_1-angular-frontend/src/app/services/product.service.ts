@@ -19,6 +19,13 @@ export class ProductService {
   }
 
   public save(product: Product) {
-    return this.http.put<Product>(`api/v1/product`, product);
+    if (product.id != null) {
+      return this.http.put<Product>(`api/v1/product`, product);
+    }
+    return this.http.post<Product>(`api/v1/product`, product);
+  }
+
+  public delete(id: number | null) {
+    return this.http.delete(`api/v1/product/${id}`);
   }
 }

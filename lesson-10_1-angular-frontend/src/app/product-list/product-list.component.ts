@@ -16,7 +16,23 @@ export class ProductListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.productService.findAll(1)
+    this.findAll(1);
+  }
+
+  public delete(id: number | null) {
+    this.productService.delete(id).subscribe( {
+      next: () => {
+        console.info(`Product with id = ${id} was successfully deleted`);
+        this.findAll(1);
+      },
+      error: (msg: String) => {
+        console.error(msg);
+      }
+    })
+  }
+
+  private findAll(page: number) {
+    this.productService.findAll(page)
       .subscribe({
         next: (res: Page) => {
           this.products = res.content;
@@ -25,9 +41,5 @@ export class ProductListComponent implements OnInit {
           console.error(msg);
         }
       })
-  }
-
-  public delete(id: number | null) {
-    //TODO
   }
 }
