@@ -6,10 +6,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import ru.geekbrains.app.persist.CategorySpecification;
 import ru.geekbrains.app.persist.Category;
 import ru.geekbrains.app.persist.CategoryRepository;
+import ru.geekbrains.app.persist.CategorySpecification;
 import ru.geekbrains.app.service.dto.CategoryDto;
+import ru.geekbrains.app.service.dto.CategoryMapper;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
 
     @Override
     public Page<CategoryDto> findAll(Optional<String> nameFilter,
@@ -37,13 +39,13 @@ public class CategoryServiceImpl implements CategoryService {
         spec = combineSpec(spec, Specification.where(null));
 
         return categoryRepository.findAll(spec, PageRequest.of(page, size, Sort.by(direction, sortField)))
-                .map(CategoryServiceImpl::convertCategoryToCategoryDto);
+                .map(categoryMapper::fromCategory);
     }
 
     @Override
     public Optional<CategoryDto> findById(Long categoryId) {
         return categoryRepository.findById(categoryId)
-                .map(CategoryServiceImpl::convertCategoryToCategoryDto);
+                .map(categoryMapper::fromCategory);
     }
 
     @Override
@@ -53,14 +55,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto save(CategoryDto categoryDto) {
-        Category category = new Category(categoryDto.getId(),
-                categoryDto.getName(), null);
-
-        return convertCategoryToCategoryDto(categoryRepository.save(category));
-    }
-
-    private static CategoryDto convertCategoryToCategoryDto(Category category) {
-        return new CategoryDto(category.getId(), category.getName());
+        Category category = categoryMapper.toCategory(categoryDto);
+        category = categoryRepository.save(category);
+        return categoryMapper.fromCategory(category);
     }
 
     private <T> Specification<T> combineSpec(Specification<T> s1, Specification<T> s2) {
