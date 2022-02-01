@@ -38,11 +38,11 @@
 
                 <div class="form-group">
                     <label for="category">Category</label>
-                    <select class="form-control" id="category" th:field="*{categoryId}" required>
+                    <select class="form-control" id="category" th:field="*{category.id}" required>
                         <option th:each="cat : ${categories}"
                                 th:text="${cat.name}"
                                 th:value="${cat.id}"
-                                th:selected="${product.categoryId == cat.id}">
+                                th:selected="${product.category.id == cat.id}">
                         </option>
                     </select>
                 </div>

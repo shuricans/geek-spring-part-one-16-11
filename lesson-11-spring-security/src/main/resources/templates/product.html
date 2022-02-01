@@ -53,7 +53,7 @@
                     <th scope="row" th:text="${product.id}">1</th>
                     <td th:text="${product.name}"></td>
                     <td th:text="${product.description}"></td>
-                    <td th:text="${product.categoryName}"></td>
+                    <td th:text="${product.category.name}"></td>
                     <td th:text="${product.price}"></td>
                     <td>
                         <a class="btn btn-success" th:href="@{/product/{id}(id = ${product.id})}"><i
