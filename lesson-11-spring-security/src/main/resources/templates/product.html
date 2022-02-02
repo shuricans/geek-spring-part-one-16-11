@@ -1,5 +1,7 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="fragments/header :: head"></head>
 
@@ -9,7 +11,8 @@
 
 <div class="container">
     <div class="row py-2">
-        <div class="col-12">
+
+        <div class="col-12" sec:authorize="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN','ROLE_SUPER_ADMIN')">
             <a class="btn btn-primary" th:href="@{/product/new}">Add Product</a>
         </div>
 
@@ -40,12 +43,13 @@
             <table class="table table-bordered my-2">
                 <thead>
                 <tr>
-                    <th th:replace="fragments/sort_header :: sort_header('Id', 'id')"></th>
-                    <th th:replace="fragments/sort_header :: sort_header('Name', 'name')"></th>
-                    <th th:replace="fragments/sort_header :: sort_header('Description', 'description')"></th>
-                    <th th:replace="fragments/sort_header :: sort_header('Category', 'category.name')"></th>
-                    <th th:replace="fragments/sort_header :: sort_header('Price', 'price')"></th>
-                    <th scope="col">Actions</th>
+                    <th th:replace="fragments/sort_header :: sort_header_product('Id', 'id')"></th>
+                    <th th:replace="fragments/sort_header :: sort_header_product('Name', 'name')"></th>
+                    <th th:replace="fragments/sort_header :: sort_header_product('Description', 'description')"></th>
+                    <th th:replace="fragments/sort_header :: sort_header_product('Category', 'category.name')"></th>
+                    <th th:replace="fragments/sort_header :: sort_header_product('Price', 'price')"></th>
+                    <th scope="col" sec:authorize="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN','ROLE_SUPER_ADMIN')">Actions
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -55,7 +59,7 @@
                     <td th:text="${product.description}"></td>
                     <td th:text="${product.category.name}"></td>
                     <td th:text="${product.price}"></td>
-                    <td>
+                    <td sec:authorize="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN','ROLE_SUPER_ADMIN')">
                         <a class="btn btn-success" th:href="@{/product/{id}(id = ${product.id})}"><i
                                 class="fas fa-edit"></i></a>
                         <form class="d-inline" th:method="delete" th:action="@{/product/{id}(id = ${product.id})}">
@@ -67,7 +71,7 @@
                 </tr>
 
                 <tr th:if="${products.empty}">
-                    <td colspan="5">No data</td>
+                    <td colspan="6">No data</td>
                 </tr>
                 </tbody>
             </table>
@@ -79,19 +83,19 @@
                         <ul class="pagination justify-content-left">
                             <li th:classappend="${products.isFirst} ? 'disabled'" class="page-item">
                                 <a th:replace="fragments/page_link ::
-                                 page_link('page-link', ${products.number}, ${products.size}, 'Previous')"></a>
+                                 page_link_product('page-link', ${products.number}, ${products.size}, 'Previous')"></a>
                             </li>
 
                             <li th:each="num : ${#numbers.sequence(1, products.totalPages)}"
                                 th:classappend="${num == products.number + 1} ? 'active'" class="page-item">
                                 <a th:replace="fragments/page_link ::
-                                 page_link('page-link', ${num}, ${products.size}, ${num})"></a>
+                                 page_link_product('page-link', ${num}, ${products.size}, ${num})"></a>
                             </li>
 
                             <li th:classappend="${products.isLast} ? 'disabled'"
                                 class="page-item">
                                 <a th:replace="fragments/page_link ::
-                                 page_link('page-link', ${products.number + 2}, ${products.size}, 'Next')"></a>
+                                 page_link_product('page-link', ${products.number + 2}, ${products.size}, 'Next')"></a>
                             </li>
                         </ul>
                     </nav>
@@ -106,10 +110,10 @@
                             show [[${products.size}]]
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a th:replace="fragments/page_link :: page_link('dropdown-item', 1, 5, 5)"></a>
-                            <a th:replace="fragments/page_link :: page_link('dropdown-item', 1, 10, 10)"></a>
-                            <a th:replace="fragments/page_link :: page_link('dropdown-item', 1, 20, 20)"></a>
-                            <a th:replace="fragments/page_link :: page_link('dropdown-item', 1, 40, 40)"></a>
+                            <a th:replace="fragments/page_link :: page_link_product('dropdown-item', 1, 5, 5)"></a>
+                            <a th:replace="fragments/page_link :: page_link_product('dropdown-item', 1, 10, 10)"></a>
+                            <a th:replace="fragments/page_link :: page_link_product('dropdown-item', 1, 20, 20)"></a>
+                            <a th:replace="fragments/page_link :: page_link_product('dropdown-item', 1, 40, 40)"></a>
                         </div>
                     </div>
                 </div>
