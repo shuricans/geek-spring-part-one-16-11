@@ -3,6 +3,67 @@ CREATE DATABASE lesson_11 ENCODING = 'UTF8';
 
 ALTER DATABASE lesson_11 OWNER TO postgres;
 
+-- Roles
+
+CREATE SEQUENCE roles_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER TABLE roles_sequence
+    OWNER TO postgres;
+
+create table roles
+(
+    role_id bigint       not null default nextval('roles_sequence') primary key,
+    name    varchar(255) not null
+        constraint uk_role_name unique
+);
+
+alter table roles
+    owner to postgres;
+
+
+-- Users
+
+CREATE SEQUENCE users_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER TABLE users_sequence
+    OWNER TO postgres;
+
+create table users
+(
+    user_id  bigint       not null default nextval('users_sequence') primary key,
+    login    varchar(255) not null
+        constraint uk_user_login unique,
+    password varchar(255) not null
+);
+
+alter table users
+    owner to postgres;
+
+
+-- Users_Roles
+
+create table users_roles
+(
+    user_id bigint not null
+        constraint fk_users_roles_user references users,
+    role_id bigint not null
+        constraint fk_users_roles_role references roles,
+    primary key (user_id, role_id)
+);
+
+alter table users_roles
+    owner to postgres;
+
 
 -- Category
 
@@ -101,5 +162,21 @@ values ('Pasta - Fusili, Dry', 'curae', 214.0, 1);
 insert into product (name, description, price, category_id)
 values ('Mackerel Whole Fresh', 'magnis', 603.66, 1);
 
+
+-- insert roles
+
+insert into roles(name)
+values ('ROLE_MANAGER'),
+       ('ROLE_ADMIN'),
+       ('ROLE_SUPER_ADMIN');
+
+-- insert super admin
+
+insert into users(login, password)
+values ('super_admin', '$2a$10$O5.7glPyPxWXe2f4c0E.LeOj//sAkhObGrJLxslqsxRj0chwIlfDC');
+
+insert into users_roles(user_id, role_id)
+values (1, 2),
+       (1, 3);
 
 
