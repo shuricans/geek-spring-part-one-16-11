@@ -16,4 +16,9 @@ public class IndexController {
     public String upload() {
         return "access_denied";
     }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
 }
