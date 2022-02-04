@@ -31,11 +31,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/product/**").hasAnyRole("MANAGER", "ADMIN", "SUPER_ADMIN")
                 .antMatchers("/user").hasAnyRole("ADMIN", "SUPER_ADMIN")
                 .antMatchers("/user/**").hasRole("SUPER_ADMIN")
-                .and()
-                .formLogin()
-                .defaultSuccessUrl("/product")
-                .and()
-                .exceptionHandling()
-                .accessDeniedPage("/access_denied");
+                .antMatchers("/login*").permitAll()
+                .anyRequest()
+                .authenticated()
+                    .and()
+                        .formLogin()
+                        .loginPage("/login")
+                        .permitAll()
+                        .defaultSuccessUrl("/product", true)
+                    .and()
+                        .logout()
+                        .permitAll()
+                    .and()
+                        .exceptionHandling()
+                        .accessDeniedPage("/access_denied");
     }
 }
