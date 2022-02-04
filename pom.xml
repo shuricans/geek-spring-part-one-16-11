@@ -29,6 +29,7 @@
         <module>lesson-09-spring-boot-rest</module>
         <module>lesson-10_2-spring-boot-rest-cart-service</module>
         <module>lesson-11-spring-security</module>
+        <module>lesson-12-spring-security-custom-login</module>
     </modules>
 
 </project>
