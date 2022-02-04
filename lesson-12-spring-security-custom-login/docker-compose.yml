@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  server:
+    container_name: lesson_12_app
+    image: lesson_12
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      spring.datasource.url: "jdbc:postgresql://db:5432/lesson_12"
+      spring.datasource.username: postgres
+      spring.datasource.password: 123
+    networks:
+      default:
+
+networks:
+  default:
+    external:
+      name: db
